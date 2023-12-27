@@ -1,0 +1,65 @@
+{
+  "name": "angular-boilerplate-v16",
+  "version": "0.0.0",
+  "author": {
+    "name": "Abhishek Vishwakarma",
+    "email": "abhishek@pmaxtek.com",
+    "url": "pmaxtek.com"
+  },
+  "scripts": {
+    "ng": "ng",
+    "prepare": "husky install",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" \"src/**/*.html\" \"src/**/**/*.html\" \"src/**/*.scss\" \"src/**/**/*.scss\"",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.2.0",
+    "@angular/common": "^16.2.0",
+    "@angular/compiler": "^16.2.0",
+    "@angular/core": "^16.2.0",
+    "@angular/forms": "^16.2.0",
+    "@angular/platform-browser": "^16.2.0",
+    "@angular/platform-browser-dynamic": "^16.2.0",
+    "@angular/router": "^16.2.0",
+    "@angular/service-worker": "^16.2.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.4",
+    "@angular/cli": "^16.2.4",
+    "@angular/compiler-cli": "^16.2.0",
+    "@types/jasmine": "~4.3.0",
+    "autoprefixer": "^10.4.16",
+    "husky": "^8.0.3",
+    "jasmine-core": "~4.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^14.0.1",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.3.3",
+    "typescript": "~5.1.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,jsx,tsx,json,css,scss,md}": [
+      "npm run format",
+      "ng lint",
+      "git add"
+    ]
+  }
+}
