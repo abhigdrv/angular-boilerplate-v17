@@ -10,6 +10,7 @@ import { MyHttpInterceptorInterceptor } from './interceptors/my-http.interceptor
 import { HomeComponent } from './pages/home/home.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { UpperCasePipe } from './pipes/upper-case.pipe';
+import './prototypeExtension';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { UpperCasePipe } from './pipes/upper-case.pipe';
     ChangeBgColorOnClickDirective,
     HomeComponent,
     ErrorComponent,
-    UpperCasePipe
+    UpperCasePipe,
   ],
   imports: [
     BrowserModule,
@@ -26,16 +27,16 @@ import { UpperCasePipe } from './pipes/upper-case.pipe';
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MyHttpInterceptorInterceptor,
       multi: true,
-    }
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
