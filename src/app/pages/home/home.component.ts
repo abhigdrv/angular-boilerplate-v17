@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ConfigService } from 'src/app/configs/config.services';
+import { ApiServiceService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   title: String = 'home';
   people: any = [
     { id: 1, name: 'Alice', age: 25 },
@@ -15,7 +17,10 @@ export class HomeComponent {
     { id: 5, name: 'Charlie', age: 22 },
   ];
 
-  constructor() {
+  constructor(
+    private configService: ConfigService,
+    private apiServiceService: ApiServiceService,
+  ) {
     this.title = this.title.capitalizeFirstLetter();
     // console.log(this.people.groupBy((item: any) => item.age));
     // console.log(this.people.groupByKey('age'));
@@ -32,5 +37,15 @@ export class HomeComponent {
     // console.log(this.people.removeByKeyValue('age', 22));
     // console.log(this.people.findIndexByKeyValue('age', 22));
     // console.log(this.people.findByKeyValue('age', 22));
+  }
+
+  ngOnInit(): void {
+    this.getTestData();
+  }
+  entries: any;
+
+  async getTestData() {
+    this.entries = await this.configService.getApiPromise('cacheName', () => this.apiServiceService.getEntriesPublicApiCall({}));
+    console.log(this.entries);
   }
 }

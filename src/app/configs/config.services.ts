@@ -102,7 +102,7 @@ export class ConfigService {
       .pipe(catchError(this.handleError));
   }
 
-  async getApiPromise(
+  getApiPromise(
     cacheName: any,
     apiCallMethod: () => any,
     keys?: string[],
@@ -122,7 +122,7 @@ export class ConfigService {
           } else {
             apiCallMethod().subscribe({
               next: (res: any) => {
-                if (res.body.statusCode == 200 || res.statusCode == 200) {
+                if (res.body.statusCode == 200 || res.statusCode == 200 || res.status == 200 || res.body.status == 200) {
                   if (keys && keys.length > 0) {
                     res = getValue(res, keys);
                   }

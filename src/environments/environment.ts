@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: '',
+  apiUrl: 'https://cat-fact.herokuapp.com/',
   cacheEnable: true,
 };

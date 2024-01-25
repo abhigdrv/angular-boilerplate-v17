@@ -6,14 +6,16 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ApiServiceService {
-  baseRoute = '/entries';
+  baseRoute = '';
   constructor(private configServices: ConfigService) {}
 
-  getApiCall(getParams?: any) {
-    return this.configServices.readRequest(this.baseRoute + '', getParams).pipe(
-      map((response) => {
-        return response;
-      })
-    );
+  getEntriesPublicApiCall(getParams?: any) {
+    return this.configServices
+      .readRequest(this.baseRoute + 'facts', getParams)
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+      );
   }
 }
