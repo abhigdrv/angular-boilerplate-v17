@@ -40,12 +40,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getTestData();
+    // this.getTestData();
   }
   entries: any;
 
   async getTestData() {
     this.entries = await this.configService.getApiPromise('cacheName', () => this.apiServiceService.getEntriesPublicApiCall({}));
-    console.log(this.entries);
   }
 }
