@@ -5,7 +5,7 @@ import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultComponent } from './default.component';
 import { DefaultHeaderComponent } from './default-header/default-header.component';
 import { DefaultFooterComponent } from './default-footer/default-footer.component';
-
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
   declarations: [
@@ -15,6 +15,7 @@ import { DefaultFooterComponent } from './default-footer/default-footer.componen
   ],
   imports: [
     CommonModule,
+    MenubarModule,
     DefaultRoutingModule
   ]
 })
