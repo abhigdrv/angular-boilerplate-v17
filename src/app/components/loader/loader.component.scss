@@ -30,3 +30,49 @@
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+
+
+
+
+.loader-37 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  zoom:5;
+  transform: translate(-50%, -50%);
+	border-right: .1em solid currentcolor;
+	border-radius: 100%;
+	animation: loader-37 800ms linear infinite;
+	&:before,
+	&:after {
+		content: '';
+		width: .8em;
+		height: .8em;
+		display: block;
+		position: absolute;
+		top: calc(50% - .4em);
+		left: calc(50% - .4em);
+		border-left: .08em solid currentcolor;
+		border-radius: 100%;
+		animation: loader-37 400ms linear infinite reverse;
+	}
+	&:after {
+		width: .6em;
+		height: .6em;
+		top: calc(50% - .3em);
+		left: calc(50% - .3em);
+		border: 0;
+		border-right: .05em solid currentcolor;
+		animation: none;
+	}
+}
+
+@keyframes loader-37 {
+	from {
+		transform: rotate(360deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
