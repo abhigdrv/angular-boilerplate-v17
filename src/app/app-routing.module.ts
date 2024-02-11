@@ -1,19 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./layouts/default/default.module').then((m) => m.DefaultModule),
+    component:DefaultLayoutComponent,
+    children:[
+      {
+        path: '',
+        component:HomeComponent
+      }
+    ]
   },
   {
     path: 'main',
-    loadChildren: () => import('./layouts/main/main.module').then((m) => m.MainModule),
+    component:MainLayoutComponent,
+    children:[
+      {
+        path: '',
+        component:HomeComponent
+      }
+    ]
   },
-  {
-    path: 'auth',
-    loadChildren: () => import('./layouts/auth/auth.module').then((m) => m.AuthModule),
-  }
 ];
 
 @NgModule({

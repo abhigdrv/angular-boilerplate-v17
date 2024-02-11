@@ -14,6 +14,8 @@ import './prototypeExtension';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoaderComponent } from './components/loader/loader.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     ErrorComponent,
     UpperCasePipe,
     LoaderComponent,
+    MainLayoutComponent,
+    DefaultLayoutComponent,
   ],
   imports: [
     BrowserModule,
