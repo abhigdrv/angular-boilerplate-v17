@@ -11,6 +11,8 @@ import { finalize } from 'rxjs/operators';
 import { ConfigSettings } from '../configs/config.settings';
 import { Router } from '@angular/router';
 import { LoaderService } from '../services/loader.service';
+import { CacheStorageService } from '../services/cache-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class MyHttpInterceptorInterceptor implements HttpInterceptor {
@@ -19,6 +21,7 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
 
   constructor(
     private configSettings: ConfigSettings,
+    private cacheStorageService: CacheStorageService,
     private loaderService: LoaderService
   ) {
     this.lang = this.configSettings.getLang();
@@ -28,23 +31,44 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    let headers = new HttpHeaders({
-      authorization: 'tokenDfkTgVf87gT63Hg',
-      lang: this.lang,
-    });
-    this.loaderService.show();
-    this.ongoingRequestsCount.next(this.ongoingRequestsCount.value + 1);
+    
+    if(request.method === 'GET'){
+      let cacheName = String(request.urlWithParams);
+      this.cacheStorageService.getFromCache(cacheName).then(async (cachedData:any) => {
+        if (cachedData && cachedData != undefined && cachedData != 'undefined' && environment.cacheEnable) {
+         return cachedData;
+        }
+      })
+    }
+    let headers = this.getHeader();
+    this.startLoader();
     const modifiedRequest = request.clone({ headers });
     return next.handle(modifiedRequest).pipe(
       finalize(() => {
-        this.ongoingRequestsCount.next(
-          Math.max(0, this.ongoingRequestsCount.value - 1)
-        );
-        if (this.ongoingRequestsCount.value === 0) {
-          this.debounceHide();
-        }
+        this.stopLoader();
       })
     );
+  }
+
+  private getHeader(){
+    return new HttpHeaders({
+      authorization: 'tokenDfkTgVf87gT63Hg',
+      lang: this.lang,
+    });
+  }
+
+  private startLoader(){
+    this.loaderService.show();
+    this.ongoingRequestsCount.next(this.ongoingRequestsCount.value + 1);
+  }
+
+  private stopLoader(){
+    this.ongoingRequestsCount.next(
+      Math.max(0, this.ongoingRequestsCount.value - 1)
+    );
+    if (this.ongoingRequestsCount.value === 0) {
+      this.debounceHide();
+    }
   }
 
   private debounceHide = (() => {
