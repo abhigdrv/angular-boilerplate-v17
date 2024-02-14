@@ -35,10 +35,13 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
     if(request.method === 'GET'){
       let cacheName = String(request.urlWithParams);
       this.cacheStorageService.getFromCache(cacheName).then(async (cachedData:any) => {
-        if (cachedData && cachedData != undefined && cachedData != 'undefined' && environment.cacheEnable) {
+        if (cachedData && cachedData != undefined && cachedData != 'undefined' && environment.cache.enable) {
          return cachedData;
         }
       })
+    }
+    if((request.method === 'POST' || request.method === 'PUT') && environment.cache.clearOnPost){
+      this.cacheStorageService.clearCache();
     }
     let headers = this.getHeader();
     this.startLoader();
