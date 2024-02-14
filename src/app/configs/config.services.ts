@@ -9,7 +9,6 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ConfigSettings } from './config.settings';
-import { CacheStorageService } from '../services/cache-storage.service';
 import { getValue } from './helper';
 
 @Injectable({
@@ -27,7 +26,6 @@ export class ConfigService {
   constructor(
     private http: HttpClient,
     public configSettings: ConfigSettings,
-    private cacheStorageService: CacheStorageService,
   ) {}
 
   private getCompleteUrl(url: string, params: any): string {
@@ -64,6 +62,10 @@ export class ConfigService {
       .pipe(catchError(this.handleError));
   }
 
+  async getPromise(url: string, params?: any, keys?: string[]){
+    return this.getApiPromise(() => this.readRequest(url, params), keys);
+  }
+
   readExternalRequest(
     url: string,
     params: Object,
@@ -86,6 +88,10 @@ export class ConfigService {
       .pipe(catchError(this.handleError));
   }
 
+  async postPromise(url: string, getParams: any, postParams: any, keys?: string[]){
+    return this.getApiPromise(() => this.postRequest(url, getParams, postParams), keys);
+  }
+
   putRequest(url: string, getParams: Object, postParams: any): Observable<any> {
     return this.http
       .put<any>(
@@ -96,63 +102,43 @@ export class ConfigService {
       .pipe(catchError(this.handleError));
   }
 
+  async putPromise(url: string, getParams: any, postParams: any, keys?: string[]){
+    return this.getApiPromise(() => this.putRequest(url, getParams, postParams), keys);
+  }
+
   deleteRequest(url: string, params: Object): Observable<HttpResponse<any>> {
     return this.http
       .delete<any>(this.getCompleteUrl(url, params), { observe: 'response' })
       .pipe(catchError(this.handleError));
   }
 
-  getApiPromise(
-    cacheName: any,
-    apiCallMethod: () => any,
-    keys?: string[],
-  ) {
+  async deletePromise(url: string, params?: any, keys?: string[]){
+    return this.getApiPromise(() => this.deleteRequest(url, params), keys);
+  }
+
+  async getApiPromise(apiCallMethod: () => any, keys?: string[]) {
     return new Promise((resolve) => {
-      this.cacheStorageService
-        .getFromCache(cacheName)
-        .then(async (cachedData: any) => {
-          if (cachedData && environment.cacheEnable) {
-            if (
-              cachedData &&
-              cachedData != undefined &&
-              cachedData != 'undefined'
-            ) {
-              resolve(cachedData);
+      apiCallMethod().subscribe({
+        next: (res: any) => {
+          if (
+            res.body.statusCode == 200 ||
+            res.statusCode == 200 ||
+            res.status == 200 ||
+            res.body.status == 200
+          ) {
+            if (keys && keys.length > 0) {
+              res = getValue(res, keys);
             }
-          } else {
-            apiCallMethod().subscribe({
-              next: (res: any) => {
-                if (res.body.statusCode == 200 || res.statusCode == 200 || res.status == 200 || res.body.status == 200) {
-                  if (keys && keys.length > 0) {
-                    res = getValue(res, keys);
-                  }
-                  if (environment.cacheEnable) {
-                    this.cacheStorageService
-                      .addToCache(cacheName, res)
-                      .then(() => {
-                        console.info(cacheName + ' added to Cache');
-                      })
-                      .catch((error) => {
-                        console.log(
-                          `Error occurred while adding ${cacheName} to cache with error ${error}`,
-                        );
-                      });
-                  }
-                  resolve(res);
-                }
-              },
-              error: (err: any) => {
-                console.error(
-                  'Failed to connect with API server with error:',
-                  err,
-                );
-              },
-              complete: () => {
-                // Handle completion if needed
-              },
-            });
+            resolve(res);
           }
-        });
+        },
+        error: (err: any) => {
+          console.error('Failed to connect with API server with error:', err);
+        },
+        complete: () => {
+          // Handle completion if needed
+        },
+      });
     });
   }
 

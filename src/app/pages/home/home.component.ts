@@ -45,6 +45,6 @@ export class HomeComponent implements OnInit {
   entries: any;
 
   async getTestData() {
-    this.entries = await this.configService.getApiPromise('cacheName', () => this.apiServiceService.getEntriesPublicApiCall({}));
+    this.entries = await this.configService.getPromise('facts', {})
   }
 }

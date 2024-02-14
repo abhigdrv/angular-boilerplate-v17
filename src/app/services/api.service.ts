@@ -8,14 +8,4 @@ import { map } from 'rxjs/operators';
 export class ApiServiceService {
   baseRoute = '';
   constructor(private configServices: ConfigService) {}
-
-  getEntriesPublicApiCall(getParams?: any) {
-    return this.configServices
-      .readRequest(this.baseRoute + 'facts', getParams)
-      .pipe(
-        map((response) => {
-          return response;
-        }),
-      );
-  }
 }
