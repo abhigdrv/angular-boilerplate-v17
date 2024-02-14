@@ -5,11 +5,11 @@ import {
   HttpEvent,
   HttpInterceptor,
   HttpHeaders,
+  HttpResponse,
 } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
+import { finalize, mergeMap, tap } from 'rxjs/operators';
 import { ConfigSettings } from '../configs/config.settings';
-import { Router } from '@angular/router';
 import { LoaderService } from '../services/loader.service';
 import { CacheStorageService } from '../services/cache-storage.service';
 import { environment } from 'src/environments/environment';
@@ -31,14 +31,23 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    
-    if(request.method === 'GET'){
+    if (request.method === 'GET') {
       let cacheName = String(request.urlWithParams);
-      this.cacheStorageService.getFromCache(cacheName).then(async (cachedData:any) => {
-        if (cachedData && cachedData != undefined && cachedData != 'undefined' && environment.cache.enable) {
-         return cachedData;
-        }
-      })
+      return from(this.cacheStorageService.getFromCache(cacheName)).pipe(
+        mergeMap((cachedData: any) => {
+          if (cachedData && environment.cache.enable) {
+            return of(new HttpResponse({ body: cachedData }));
+          } else {
+            return next.handle(request).pipe(
+              tap((event) => {
+                if (event instanceof HttpResponse && environment.cache.enable) {
+                  this.cacheStorageService.addToCache(cacheName, event.body);
+                }
+              })
+            );
+          }
+        })
+      );
     }
     if((request.method === 'POST' || request.method === 'PUT') && environment.cache.clearOnPost){
       this.cacheStorageService.clearCache();
