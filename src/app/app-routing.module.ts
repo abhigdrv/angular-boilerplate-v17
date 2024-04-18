@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { DocumentationComponent } from './pages/documentation/documentation.component';
+import { ErrorComponent } from './pages/error/error.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,14 @@ const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'documentation/:fileName', 
+    component: DocumentationComponent
+  },
+  {
+    path:"**",
+    component:ErrorComponent
+  }
 ];
 
 @NgModule({

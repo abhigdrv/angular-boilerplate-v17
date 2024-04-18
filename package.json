@@ -13,7 +13,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "compodoc:build": "compodoc -p tsconfig.doc.json",
+    "compodoc:build-and-serve": "compodoc -p tsconfig.doc.json -s",
+    "compodoc:serve": "compodoc -s"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +29,7 @@
     "@angular/platform-browser-dynamic": "^17.0.8",
     "@angular/router": "^17.0.8",
     "@angular/service-worker": "^17.0.8",
+    "@compodoc/compodoc": "^1.1.23",
     "primeng": "^17.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
