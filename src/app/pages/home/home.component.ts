@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     { id: 4, name: 'Charlie', age: 22 },
     { id: 5, name: 'Charlie', age: 22 },
   ];
+  triggerV:boolean = true;
 
   constructor(
     private configService: ConfigService,
@@ -41,6 +42,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTestData();
+    setTimeout(() => {
+      this.triggerV = false
+    }, 5000);
   }
   entries: any;
 

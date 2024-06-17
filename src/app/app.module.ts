@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
+import { PulseEffectDirective } from './directives/pulse-effect.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
     LoaderComponent,
     MainLayoutComponent,
     DefaultLayoutComponent,
+    PulseEffectDirective
   ],
   imports: [
     BrowserModule,

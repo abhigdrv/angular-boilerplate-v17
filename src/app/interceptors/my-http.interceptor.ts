@@ -33,21 +33,25 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     if (request.method === 'GET') {
       let cacheName = String(request.urlWithParams);
-      return from(this.cacheStorageService.getFromCache(cacheName)).pipe(
-        mergeMap((cachedData: any) => {
-          if (cachedData && environment.cache.enable) {
-            return of(new HttpResponse({ body: cachedData }));
-          } else {
-            return next.handle(request).pipe(
-              tap((event) => {
-                if (event instanceof HttpResponse && environment.cache.enable) {
-                  this.cacheStorageService.addToCache(cacheName, event.body);
-                }
-              })
-            );
-          }
-        })
-      );
+      if (environment.cache.enable) {
+        return from(this.cacheStorageService.getFromCache(cacheName)).pipe(
+          mergeMap((cachedData: any) => {
+            if (cachedData) {
+              return of(new HttpResponse({ body: cachedData }));
+            } else {
+              return next.handle(request).pipe(
+                tap((event) => {
+                  if (event instanceof HttpResponse) {
+                    this.cacheStorageService.addToCache(cacheName, event.body);
+                  }
+                })
+              );
+            }
+          })
+        );
+      } else {
+        return next.handle(request);
+      }
     }
     if((request.method === 'POST' || request.method === 'PUT') && environment.cache.clearOnPost){
       this.cacheStorageService.clearCache();
