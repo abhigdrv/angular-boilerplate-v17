@@ -141,6 +141,8 @@ import { RouterModule, Routes } from &#x27;@angular/router&#x27;;
 import { HomeComponent } from &#x27;./pages/home/home.component&#x27;;
 import { DefaultLayoutComponent } from &#x27;./layouts/default-layout/default-layout.component&#x27;;
 import { MainLayoutComponent } from &#x27;./layouts/main-layout/main-layout.component&#x27;;
+import { DocumentationComponent } from &#x27;./pages/documentation/documentation.component&#x27;;
+import { ErrorComponent } from &#x27;./pages/error/error.component&#x27;;
 
 const routes: Routes &#x3D; [
   {
@@ -163,6 +165,14 @@ const routes: Routes &#x3D; [
       }
     ]
   },
+  { 
+    path: &#x27;documentation/:fileName&#x27;, 
+    component: DocumentationComponent
+  },
+  {
+    path:&quot;**&quot;,
+    component:ErrorComponent
+  }
 ];
 
 @NgModule({

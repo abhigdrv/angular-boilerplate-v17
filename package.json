@@ -29,7 +29,6 @@
     "@angular/platform-browser-dynamic": "^17.0.8",
     "@angular/router": "^17.0.8",
     "@angular/service-worker": "^17.0.8",
-    "@compodoc/compodoc": "^1.1.23",
     "primeng": "^17.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.8",
+    "@compodoc/compodoc": "^1.1.23",
     "@angular/cli": "^17.0.8",
     "@angular/compiler-cli": "^17.0.8",
     "@types/jasmine": "~4.3.0",

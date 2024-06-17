@@ -291,8 +291,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -409,8 +409,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="72"
-                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:72</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -448,8 +448,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="81"
+                                    class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -500,7 +500,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:86</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/app/interceptors/my-http.interceptor.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -605,21 +605,25 @@ export class MyHttpInterceptorInterceptor implements HttpInterceptor {
   ): Observable&lt;HttpEvent&lt;any&gt;&gt; {
     if (request.method &#x3D;&#x3D;&#x3D; &#x27;GET&#x27;) {
       let cacheName &#x3D; String(request.urlWithParams);
-      return from(this.cacheStorageService.getFromCache(cacheName)).pipe(
-        mergeMap((cachedData: any) &#x3D;&gt; {
-          if (cachedData &amp;&amp; environment.cache.enable) {
-            return of(new HttpResponse({ body: cachedData }));
-          } else {
-            return next.handle(request).pipe(
-              tap((event) &#x3D;&gt; {
-                if (event instanceof HttpResponse &amp;&amp; environment.cache.enable) {
-                  this.cacheStorageService.addToCache(cacheName, event.body);
-                }
-              })
-            );
-          }
-        })
-      );
+      if (environment.cache.enable) {
+        return from(this.cacheStorageService.getFromCache(cacheName)).pipe(
+          mergeMap((cachedData: any) &#x3D;&gt; {
+            if (cachedData) {
+              return of(new HttpResponse({ body: cachedData }));
+            } else {
+              return next.handle(request).pipe(
+                tap((event) &#x3D;&gt; {
+                  if (event instanceof HttpResponse) {
+                    this.cacheStorageService.addToCache(cacheName, event.body);
+                  }
+                })
+              );
+            }
+          })
+        );
+      } else {
+        return next.handle(request);
+      }
     }
     if((request.method &#x3D;&#x3D;&#x3D; &#x27;POST&#x27; || request.method &#x3D;&#x3D;&#x3D; &#x27;PUT&#x27;) &amp;&amp; environment.cache.clearOnPost){
       this.cacheStorageService.clearCache();
