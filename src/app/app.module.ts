@@ -17,6 +17,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { PulseEffectDirective } from './directives/pulse-effect.directive';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { PulseEffectDirective } from './directives/pulse-effect.directive';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    PaginationComponent,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

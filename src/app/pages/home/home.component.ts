@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     { id: 4, name: 'Charlie', age: 22 },
     { id: 5, name: 'Charlie', age: 22 },
   ];
-  triggerV:boolean = true;
+  triggerV: boolean = true;
 
   constructor(
     private configService: ConfigService,
@@ -43,12 +43,29 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getTestData();
     setTimeout(() => {
-      this.triggerV = false
+      this.triggerV = false;
     }, 5000);
   }
   entries: any;
 
   async getTestData() {
-    this.entries = await this.configService.getPromise('facts', {})
+    this.entries = await this.configService.getPromise('facts', {});
+  }
+
+  pagination: any = {
+    totalItem: 25,
+    itemPerPage: 10,
+    totalPages: [1, 2, 3],
+    pageNumber: 1,
+    displayRecords: [10, 20, 30],
+  };
+
+  totalItems = 1000;
+  itemsPerPage = 10;
+  currentPage = 1;
+
+  onPageChanged(page: number): void {
+    this.currentPage = page;
+    // Handle page change logic, e.g., fetching new data based on the page number
   }
 }
