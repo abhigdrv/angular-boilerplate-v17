@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ChangeBgColorOnClickDirective } from './directives/change-bg-color-on-click.directive';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MyHttpInterceptorInterceptor } from './interceptors/my-http.interceptor';
 import { HomeComponent } from './pages/home/home.component';
 import { ErrorComponent } from './pages/error/error.component';
@@ -19,39 +19,33 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
 import { PulseEffectDirective } from './directives/pulse-effect.directive';
 import { PaginationComponent } from './components/pagination/pagination.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    ChangeBgColorOnClickDirective,
-    HomeComponent,
-    ErrorComponent,
-    UpperCasePipe,
-    LoaderComponent,
-    MainLayoutComponent,
-    DefaultLayoutComponent,
-    PulseEffectDirective
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    PaginationComponent,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MyHttpInterceptorInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        ChangeBgColorOnClickDirective,
+        HomeComponent,
+        ErrorComponent,
+        UpperCasePipe,
+        LoaderComponent,
+        MainLayoutComponent,
+        DefaultLayoutComponent,
+        PulseEffectDirective
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FormsModule,
+        PaginationComponent,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        })], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MyHttpInterceptorInterceptor,
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

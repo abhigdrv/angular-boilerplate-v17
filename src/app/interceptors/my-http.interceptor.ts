@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpHeaders,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { finalize, mergeMap, tap } from 'rxjs/operators';
 import { ConfigSettings } from '../configs/config.settings';
