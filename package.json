@@ -29,16 +29,16 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@angular/service-worker": "^18.2.0",
-    "primeng": "^17.4.0",
+    "primeng": "^17.18.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.0",
-    "@compodoc/compodoc": "^1.1.23",
     "@angular/cli": "^18.2.0",
     "@angular/compiler-cli": "^18.2.0",
+    "@compodoc/compodoc": "^1.1.23",
     "@types/jasmine": "~4.3.0",
     "autoprefixer": "^10.4.16",
     "husky": "^8.0.3",
